@@ -9,6 +9,8 @@ namespace Api.Configuration
         public AutoMapperConfig()
         {
             CreateMap<Product, ProductViewModel>().ReverseMap();
+            CreateMap<Sale, SaleViewModel>().ReverseMap();
+            CreateMap<ProductSale, ProductSaleViewModel>().ReverseMap();
         }
     }
 }

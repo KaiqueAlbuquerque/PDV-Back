@@ -25,7 +25,9 @@ namespace Api.Controllers
             if (ValidOperation())
                 return Ok(result);
 
-            return BadRequest(_notification.GetNotifications().Select(n => n.Message));
+            var message = _notification.GetNotifications().Select(n => n.Message).FirstOrDefault();
+
+            return BadRequest(message);
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)

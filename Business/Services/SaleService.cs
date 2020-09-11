@@ -28,7 +28,7 @@ namespace Business.Services
 
         public async Task Add(Sale sale)
         {
-            if (!ExecuteValidation(new SaleValidation(), sale)) return;
+            //if (!ExecuteValidation(new SaleValidation(), sale)) return;
 
             await _saleRepository.Add
             (
@@ -59,11 +59,18 @@ namespace Business.Services
                 await _productRepository.Update(product.Product);
             }
 
-            var printer = new Printer("EPSON TM-T88V Receipt", PrinterType.Epson);
+            try
+            {
+                var printer = new Printer("EPSON TM-T88V Receipt", PrinterType.Epson);
 
-            printer.PrintOut(sale);
-            printer.PartialPaperCut();
-            printer.PrintDocument();
+                printer.PrintOut(sale);
+                printer.PartialPaperCut();
+                printer.PrintDocument();
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
 
         public void Dispose()

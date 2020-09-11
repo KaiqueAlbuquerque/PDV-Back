@@ -36,6 +36,10 @@ namespace Api.Controllers
         public async Task<ActionResult<ProductViewModel>> GetByBarCode([FromQuery] string barCode)
         {
             var result = await _productService.Get(p => p.BarCode == barCode && p.Active);
+
+            if (result == null || result.Count() == 0)
+                return BadRequest();
+
             var response = _mapper.Map<ProductViewModel>(result.FirstOrDefault());
             return CustomResponse(response);
         }
