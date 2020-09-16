@@ -167,10 +167,10 @@ namespace Vip.Printer
         {
             DoubleWidth2();
             AlignCenter();
-            Append("Bar e mercearia do Ceara");
+            Append("Caparroz Formas");
             NormalWidth();
-            Append("Rua Serra de Itabaiana, nº 55");
-            Append("Parque Santa Madalena - São Paulo - SP");
+            Append("Rua Pedro de Castro Velho, nº 915");
+            Append("Jardim Iva - São Paulo - SP");
             MeuSeparator();
             DoubleWidth3();
             AlignCenter();
@@ -178,14 +178,14 @@ namespace Vip.Printer
             AlignLeft();
             MeuSeparator();
             NormalWidth();
-            BoldMode($"Pedido: 00001 Data: {DateTime.Now}");
+            BoldMode($"Data: {DateTime.Now}");
             MeuSeparator();
-            BoldMode($"Item   Qtd  Descricao         Unit         Total");
+            BoldMode($"Item  Cód.  Qtd  Descricao         Unit         Total");
 
             int increment = 1;
             foreach (var product in sale.ProductSales)
             {
-                Append($"{increment.ToString().PadLeft(4, '0')}   {product.Quantity.ToString().PadRight(4)} {product.Product.NoteDescription.PadRight(17)} R$ {product.Product.Value.ToString().PadRight(9)} R$ {product.Total}");
+                Append($"{increment.ToString().PadLeft(4, '0')}  {product.Product.ExternalId}  {product.Quantity.ToString().PadRight(4)} {product.Product.Description.PadRight(17)} R$ {product.Product.Value.ToString().PadRight(9)} R$ {product.Total}");
                 increment++;
             }
             

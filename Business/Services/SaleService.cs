@@ -3,6 +3,7 @@ using Business.Interfaces.Repository;
 using Business.Interfaces.Service;
 using Business.Model;
 using Business.Model.Validations;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,17 @@ namespace Business.Services
     {
         private readonly ISaleRepository _saleRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IConfiguration _configuration;
+
 
         public SaleService(ISaleRepository saleRepository,
                            IProductRepository productRepository,
-                           INotification notification) : base(notification)
+                           INotification notification,
+                           IConfiguration configuration) : base(notification)
         {
             _saleRepository = saleRepository;
             _productRepository = productRepository;
+            _configuration = configuration;
         }
 
         public async Task Add(Sale sale)
@@ -61,7 +66,22 @@ namespace Business.Services
 
             try
             {
-                var printer = new Printer("EPSON TM-T88V Receipt", PrinterType.Epson);
+                string printerName = _configuration["Printer:PrinterName"];
+                var printer = new Printer(printerName, PrinterType.Epson);
+
+                sale.ProductSales = sale.ProductSales
+                    .GroupBy(s => s.ProductId)
+                    .Select(g => new ProductSale
+                    {
+                        ProductId = g.First().ProductId,
+                        SaleId = g.First().SaleId,
+                        Sale = g.First().Sale,
+                        Product = g.First().Product,
+                        Quantity = g.Sum(s => s.Quantity),
+                        Total = g.Sum(s => s.Total)
+                    }).ToList();
+
+                sale.ProductSales = sale.ProductSales.OrderBy(c => c.Product.ExternalId.Length).ThenBy(c => c.Product.ExternalId).ToList();
 
                 printer.PrintOut(sale);
                 printer.PartialPaperCut();
