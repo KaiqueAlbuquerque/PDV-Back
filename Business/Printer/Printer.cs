@@ -185,15 +185,15 @@ namespace Vip.Printer
             int increment = 1;
             foreach (var product in sale.ProductSales)
             {
-                Append($"{increment.ToString().PadLeft(4, '0')}  {product.Product.ExternalId}  {product.Quantity.ToString().PadRight(4)} {product.Product.Description.PadRight(17)} R$ {product.Product.Value.ToString().PadRight(9)} R$ {product.Total}");
+                Append($"{increment.ToString().PadLeft(4, '0')}  {product.Product.ExternalId}  {product.Quantity.ToString().PadRight(4)} {product.Product.Description.PadRight(17)} {product.Product.Value.ToString("C").PadRight(9)} {product.Total.ToString("C")}");
                 increment++;
             }
             
             MeuSeparator();
             Append($"Forma pgto:                                  Dinheiro");
-            Append($"VALOR TOTAL:                                 R$ {sale.TotalValue}");
-            Append($"VALOR PAGO:                                  R$ {sale.AmountPaid}");
-            Append($"TROCO:                                       R$ {sale.Change}");
+            Append($"VALOR TOTAL:                                 {sale.TotalValue.ToString("C")}");
+            Append($"VALOR PAGO:                                  {sale.AmountPaid.ToString("C")}");
+            Append($"TROCO:                                       {sale.Change.ToString("C")}");
         }
 
         #region FontMode
