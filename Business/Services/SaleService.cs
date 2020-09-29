@@ -86,9 +86,6 @@ namespace Business.Services
                 printer.PrintOut(sale);
                 printer.PartialPaperCut();
                 printer.PrintDocument();
-
-                printer.PrintOut(sale);
-                printer.PartialPaperCut();
                 printer.PrintDocument();
             }
             catch (Exception ex)
